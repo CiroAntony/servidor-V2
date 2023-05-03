@@ -8,7 +8,7 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 app.use(session({
-  secret: 'my-secret-key',
+  secret: 'qwertyuiop',
   resave: false,
   saveUninitialized: false
 }));
@@ -16,50 +16,50 @@ app.use(session({
 // Conexión a la base de datos
 const connection = mysql.createConnection({
   host: 'localhost',
-  user: 'UserDeMysql',
-  password: 'PassDeMysql',
-  database: 'cticDB',
+  user: 'Vasquez',
+  password: 'MVasquez#19',
+  database: 'cticBD',
   port: 3307
 });
 
 connection.connect((err) => {
   if (err) {
-    console.error('Error connecting to database:', err);
+    console.error('Error al conectar con la BD:', err);
     return;
   }
-  console.log('Connected to database!');
+  console.log('Conexion exitosa!');
 });
 
 //Ruta para el manejo de sesiones
 app.post('/api/login', (req, res) => {
-  const { username, password } = req.body;
-  const query = `SELECT * FROM users WHERE username = '${username}' AND password = '${password}'`;
+  const { usuario, password } = req.body;
+  const query = `SELECT * FROM Usuario WHERE usuario = '${usuario}' AND password = '${password}'`;
 
   connection.query(query, (err, results) => {
     if (err) {
-      console.error('Error executing query:', err);
-      res.status(500).send('Internal server error');
+      console.error('Error al ejecutar la query:', err);
+      res.status(500).send('Error en el servidor');
       return;
     }
     if (results.length === 0) {
-      res.status(401).send('Invalid credentials');
+      res.status(401).send('Credenciales incorrectas');
       return;
     }
-    req.session.user = { username };
-    res.status(200).send('Login successful');
+    req.session.user = { usuario };
+    res.status(200).send('Inicio de sesion exitoso!');
   });
 });
 
 // ruta para el manejo de cierre de sesion
 app.post('/api/logout', (req, res) => {
   req.session.destroy();
-  res.status(200).send('Logout successful');
+  res.status(200).send('Cierro de sesion exitoso!');
 });
 
 // middleware para verificar si el usuario ha iniciado sesión
 const requireLogin = (req, res, next) => {
   if (!req.session.user) {
-    res.status(401).send('Unauthorized');
+    res.status(401).send('Restringido');
     return;
   }
   next();
@@ -67,9 +67,9 @@ const requireLogin = (req, res, next) => {
 
 // Ruta protegida que requiere inicio de sesión
 app.get('/api/protected', requireLogin, (req, res) => {
-  res.status(200).send('Protected content');
+  res.status(200).send('No puede continuar');
 });
 
 // Iniciar el servidor
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
+app.listen(PORT, () => console.log(`Iniciando servidor en el puerto: ${PORT}`));
