@@ -4,10 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "node server.js"
+    "start": "node index.js",
+    "dev": "nodemon index.js"
   },
   "keywords": [],
-  "author": "Ciro Antony Vasquez  Mendez",
+  "author": "VasquezSG19",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.20.2",
@@ -21,5 +22,8 @@
     "mysql": "^2.18.1",
     "mysql2": "^3.3.3",
     "sha1": "^1.1.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.22"
   }
 }
